@@ -5,7 +5,7 @@ reviewable and testable.
 
 ---
 
-## Phase 1 — Foundation
+## Phase 1 — Foundation [DONE]
 
 **Goal**: Project scaffold, quote-service integration, and Pydantic schemas.
 
