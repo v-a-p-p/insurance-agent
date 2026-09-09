@@ -11,6 +11,10 @@ When adding, removing, or modifying Python dependencies, always use `uv add`, `u
 
 When planning or building, never read or write the `.env` file directly. If any question arises about `.env` values or changes, ask the user instead.
 
+Do not change anything at `/namastex-fde-challenge`.
+
+Always refer to `/specs/mission.md`, `/specs/roadmap.md`, and `/specs/tech-stack.md` when planning or implementing any phase.
+
 ## Skills
 
 Load skills **progressively** — only when planning or working on the relevant layer. `.agents/skills/ecosystem-primer` is the entry point for **agent-building work only** (LangChain / LangGraph / Deep Agents). For FastAPI work, load the `.agents/skills/fastapi` directly. Cross-layer tasks (e.g., an SSE endpoint streaming a LangGraph agent) load both.

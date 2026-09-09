@@ -1,0 +1,101 @@
+# Roadmap
+
+Phases are intentionally small — each one is a shippable slice of work, independently
+reviewable and testable.
+
+---
+
+## Phase 1 — Foundation
+
+**Goal**: Project scaffold, quote-service integration, and Pydantic schemas.
+
+- `src/` package structure following FastAPI best practices (domain-driven layout).
+- Pydantic models: `Lead`, `QuoteRequest`, `QuoteResponse`, `QuoteError`.
+- `POST /chat` endpoint (skeleton) and `GET /health`.
+- `httpx` client for quote-service with timeout configuration.
+- Tests: quote-service mock, schema validation, `/health` endpoint.
+- Dataset loader: read `/namastex-fde-challenge/dataset/conversations.parquet`, group messages by `conversation_id`.
+
+---
+
+## Phase 2 — Agent Core
+
+**Goal**: Working conversational agent that qualifies the lead and produces a quote.
+
+- LangGraph state graph: nodes for `classify_intent`, `qualify_lead`, `request_quote`, `decide`.
+- OpenAI chat model via OpenRouter (`langchain-openai` with custom `base_url`).
+- Tool: `get_planos` (reads from `/planos` endpoint).
+- Tool: `cotar_seguro` (calls `POST /quote`).
+- System prompt with few-shot examples extracted from `/namastex-fde-challenge/dataset/conversations.parquet`.
+- Agent extracts from conversation: age, vehicle year/model, CEP, desired start date.
+- Tests: mock LLM responses, end-to-end happy path with mocked quote-service.
+
+---
+
+## Phase 3 — Resilience
+
+**Goal**: The agent never breaks when `/quote` misbehaves.
+
+- `tenacity` retry decorator on quote calls: 3 attempts, exponential backoff (1s → 2s → 4s), jitter.
+- Timeout of 10s per attempt.
+- When quote is slow: agent tells the lead "estou consultando a cotação, um momento..."
+- When quote fails after retries: agent offers to try a different plan or escalate.
+- Metrics: track failure rate, retry count, latency per conversation.
+- Tests: inject failures via `QUOTE_FAILURE_RATE`/`QUOTE_SLOW_RATE`, assert graceful responses.
+
+---
+
+## Phase 4 — Human Handoff
+
+**Goal**: Clear, defensible escalation to a human operator.
+
+- New graph node: `escalate_to_human`.
+- Handoff triggers (explicitly documented):
+  1. Quote refused (age > 75, vehicle > 20 years, invalid CEP).
+  2. Lead explicitly asks to speak to a human.
+  3. 3 consecutive quote-call failures (all retries exhausted).
+  4. Insufficient data after 3 qualification rounds.
+- Structured handoff summary for the human agent (lead info, what was tried, why escalated).
+- Graph `interrupt()` at handoff node for human-in-the-loop approval.
+- Tests: each trigger path, handoff summary format.
+
+---
+
+## Phase 5 — Observability
+
+**Goal**: Full traceability — every action is logged and reconstructable.
+
+- `structlog` configured with JSON rendering.
+- `conversation_id` and `trace_id` injected into every log line.
+- Each quote attempt logged with: attempt number, latency, status (success/retry/fail), plan ID.
+- LangGraph checkpointing enabled (SQLite or in-memory for dev, configurable).
+- Agent state snapshot stored at every graph transition.
+- Tests: log output validation, checkpoint restore.
+
+---
+
+## Phase 6 — Data Sensitivity
+
+**Goal**: PII is detected at the agent level and never leaked to logs or persisted.
+
+- PII detector (regex) implemented as a **LangGraph node** that runs before any
+  logging or state persistence: CPF, email, phone, license plate patterns.
+- PII redaction before structured logging (e.g., `***123.***-**`).
+- System prompt instructs the LLM to never echo full PII back in conversation responses
+  and to avoid storing raw sensitive data in agent state longer than needed for the quote.
+- Validation: run the full dataset through the detector, confirm no leaks in logs.
+- Tests: PII in message body → masked in logs, not persisted in plaintext.
+
+---
+
+## Phase 7 — Polish & Docs
+
+**Goal**: Everything documented, tested end-to-end, ready for submission.
+
+- `README.md` with: setup instructions, architecture diagram (Mermaid), decision log,
+  how to run, how to test, how to read logs.
+- Log of a complete execution (real conversation transcript, start to finish, with quote).
+- `ai-logs/` directory populated with exported AI conversations.
+- End-to-end test: real quote-service via Docker, full conversation flow, asserts on
+  final state.
+- Code cleanup pass: consistent naming, no dead code, `ruff check --fix && ruff format`.
