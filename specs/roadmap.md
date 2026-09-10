@@ -134,9 +134,16 @@ real agent quality.
 **Goal**: Everything documented, tested end-to-end, ready for submission.
 
 - `README.md` with: setup instructions, architecture diagram (Mermaid), decision log,
-  how to run, how to test, how to read logs.
-- Log of a complete execution (real conversation transcript, start to finish, with quote).
+  how to run, how to test, how to read logs, and a pointer to the execution log (see below).
+- Docker support: `Dockerfile` for the agent plus a root `docker-compose.yml` that
+  orchestrates the quote-service and the agent together, so the whole project runs with a
+  single `docker compose up`.
+- End-to-end tests in `tests/e2e/`, running on top of the whole real system (Docker
+  containers + live OpenRouter): full conversation flow, asserts on final state. Marked
+  `pytest.mark.e2e` and documented in the README.
+- Execution log ("log de uma execução completa"): the eval suite (`pytest -m eval`)
+  writes complete conversation traces to `eval/results/<timestamp>.jsonl` — lead
+  messages, agent replies, graph paths, and judge scores, including the quote. The README
+  points readers to that folder as the full start-to-finish execution log.
 - `ai-logs/` directory populated with exported AI conversations.
-- End-to-end test: real quote-service via Docker, full conversation flow, asserts on
-  final state.
 - Code cleanup pass: consistent naming, no dead code, `ruff check --fix && ruff format`.
