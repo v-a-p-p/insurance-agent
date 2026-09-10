@@ -32,7 +32,7 @@ reviewable and testable.
 
 ---
 
-## Phase 3 — Agent Evaluation
+## Phase 3 — Agent Evaluation [DONE]
 
 **Goal**: Validate the Phase 2 agent against a hand-picked diverse sample of real
 conversations from the dataset using **LLM-as-judge** — real OpenRouter calls,
