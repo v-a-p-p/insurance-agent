@@ -1,0 +1,68 @@
+{
+  "conversation_id": "conv_00021",
+  "outcome": "perdido",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "Boa tarde, quero uma cotacao"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Olivia, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Yaris, ano 2022"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Cpf 325.349.009-27, tenho 29 anos, cep 59266-333"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[imagem] foto do veiculo na garagem"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[audio] mensagem de voz (18s)"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "to no aguardo"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Completo por R$ 389,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "vi mais barato na concorrente... a Porto Seguro me ofereceu menos"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Entendo! Consigo rever, posso te ligar?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "nao precisa, obrigado"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "quote_refused",
+    "expected_key_data": {
+      "age": 29,
+      "veiculo_ano": 2022,
+      "cep": "59266-333",
+      "vehicle_model": "Toyota Yaris"
+    },
+    "objection_categories": [
+      "competitor_mention"
+    ],
+    "lead_opening_style": "greeting-only",
+    "plan_tier": "completo"
+  }
+}

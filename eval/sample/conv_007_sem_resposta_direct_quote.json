@@ -1,0 +1,56 @@
+{
+  "conversation_id": "conv_00019",
+  "outcome": "sem_resposta",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "eae, tudo bem? to querendo segurar meu carro"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Paulo, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Honda City 2011"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Cpf 812.506.226-20, cep 13398-855, tenho 21 anos"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[audio] mensagem de voz (18s)"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "qualquer coisa me chama"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Essencial por R$ 349,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Oi, conseguiu ver minha proposta?"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "no_response",
+    "expected_key_data": {
+      "age": 21,
+      "veiculo_ano": 2011,
+      "cep": "13398-855",
+      "vehicle_model": "Honda City"
+    },
+    "objection_categories": [
+      "ghosting"
+    ],
+    "lead_opening_style": "direct-quote",
+    "plan_tier": "essencial"
+  }
+}

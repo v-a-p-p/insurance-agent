@@ -6,32 +6,50 @@ from langchain_core.messages import AIMessage, HumanMessage
 from src.chat.agent import (
     AgentState,
     ClassificationResult,
+    LeadExtraction,
     build_agent,
 )
 from src.quote.schemas import QuoteError, QuoteResponse
 
 
 def _make_mock_llm_for_classify(
-    intent: str, reply: str, lead_update: dict | None = None
+    intent: str, lead_update: LeadExtraction | dict | None = None
 ):
     llm = MagicMock()
     structured = MagicMock()
+    if lead_update is None:
+        extraction = None
+    elif isinstance(lead_update, LeadExtraction):
+        extraction = lead_update
+    else:
+        extraction = LeadExtraction(**lead_update)
     structured.invoke.return_value = ClassificationResult(
-        intent=intent, reply=reply, lead_update=lead_update or {}
+        intent=intent, lead_update=extraction
     )
     llm.with_structured_output.return_value = structured
     return llm
 
 
+def _set_llm_reply(llm, content: str):
+    llm.invoke.return_value = AIMessage(content=content)
+
+
 def _make_full_mock_llm(
     intent: str = "respond",
-    classify_reply: str = "",
-    lead_update: dict | None = None,
+    lead_update: LeadExtraction | dict | None = None,
     qualify_response: str = "",
+    respond_response: str = "",
 ):
-    llm = _make_mock_llm_for_classify(intent, classify_reply, lead_update)
-    if qualify_response:
-        llm.invoke.return_value = AIMessage(content=qualify_response)
+    llm = _make_mock_llm_for_classify(intent, lead_update)
+    if qualify_response and respond_response:
+        llm.invoke.side_effect = [
+            AIMessage(content=qualify_response),
+            AIMessage(content=respond_response),
+        ]
+    elif qualify_response:
+        _set_llm_reply(llm, qualify_response)
+    elif respond_response:
+        _set_llm_reply(llm, respond_response)
     return llm
 
 
@@ -52,7 +70,9 @@ def _make_state(**overrides) -> AgentState:
 class TestClassifyIntent:
     @pytest.mark.anyio
     async def test_greeting_routes_to_respond(self):
-        llm = _make_mock_llm_for_classify("respond", "Ola! Como posso ajudar?")
+        llm = _make_full_mock_llm(
+            intent="respond", respond_response="Ola! Como posso ajudar?"
+        )
         mock_quote = AsyncMock()
         agent = build_agent(llm, mock_quote)
 
@@ -64,8 +84,7 @@ class TestClassifyIntent:
     async def test_quote_data_routes_to_qualify(self):
         llm = _make_mock_llm_for_classify(
             "qualify",
-            "Entendi! Vou verificar seus dados.",
-            {"age": 35, "veiculo_ano": 2020},
+            LeadExtraction(age=35, veiculo_ano=2020),
         )
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}
@@ -93,7 +112,7 @@ class TestClassifyIntent:
 class TestQualifyLead:
     @pytest.mark.anyio
     async def test_complete_data_routes_to_quote(self):
-        llm = _make_mock_llm_for_classify("qualify", "", {})
+        llm = _make_mock_llm_for_classify("qualify")
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}
         mock_quote.post_quote.return_value = QuoteResponse(
@@ -119,8 +138,7 @@ class TestQualifyLead:
     async def test_missing_data_asks_for_fields(self):
         llm = _make_full_mock_llm(
             intent="qualify",
-            classify_reply="Entendi!",
-            lead_update={"age": 35},
+            lead_update=LeadExtraction(age=35),
             qualify_response="Qual o ano do seu veiculo?",
         )
         mock_quote = AsyncMock()
@@ -137,7 +155,7 @@ class TestQualifyLead:
 class TestRequestQuote:
     @pytest.mark.anyio
     async def test_stores_quote_response_in_state(self):
-        llm = _make_mock_llm_for_classify("qualify", "", {})
+        llm = _make_mock_llm_for_classify("qualify")
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}
         mock_quote.post_quote.return_value = QuoteResponse(
@@ -166,11 +184,9 @@ class TestRequestQuote:
 class TestDecide:
     @pytest.mark.anyio
     async def test_success_responds_with_quote(self):
-        llm = _make_full_mock_llm(
-            intent="qualify",
-            classify_reply="Vou cotar!",
-            lead_update={"age": 35, "veiculo_ano": 2020},
-            qualify_response="Ola!",
+        llm = _make_mock_llm_for_classify(
+            "qualify",
+            LeadExtraction(age=35, veiculo_ano=2020),
         )
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}
@@ -196,11 +212,9 @@ class TestDecide:
 
     @pytest.mark.anyio
     async def test_refusal_auto_retries(self):
-        llm = _make_full_mock_llm(
-            intent="qualify",
-            classify_reply="Vou cotar!",
-            lead_update={"age": 35, "veiculo_ano": 2020},
-            qualify_response="Ola!",
+        llm = _make_mock_llm_for_classify(
+            "qualify",
+            LeadExtraction(age=35, veiculo_ano=2020),
         )
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}
@@ -234,11 +248,9 @@ class TestDecide:
 
     @pytest.mark.anyio
     async def test_all_refused_explains(self):
-        llm = _make_full_mock_llm(
-            intent="qualify",
-            classify_reply="Vou cotar!",
-            lead_update={"age": 35, "veiculo_ano": 2020},
-            qualify_response="Ola!",
+        llm = _make_mock_llm_for_classify(
+            "qualify",
+            LeadExtraction(age=35, veiculo_ano=2020),
         )
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}

@@ -1,0 +1,61 @@
+{
+  "conversation_id": "conv_00008",
+  "outcome": "sem_resposta",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "Boa tarde, quero uma cotacao"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Paulo, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Honda HR-V 2008"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Cpf 553.315.996-72, tenho 78 anos, cep 51191-165"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "meu email é paulo_ribeiro@bol.com.br e o whats é esse mesmo +55 21 94294-8253"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[audio] mensagem de voz (18s)"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "to no aguardo"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Completo por R$ 349,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Oi, conseguiu ver minha proposta?"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "no_response",
+    "expected_key_data": {
+      "age": 78,
+      "veiculo_ano": 2008,
+      "cep": "51191-165",
+      "vehicle_model": "Honda HR-V"
+    },
+    "objection_categories": [
+      "ghosting",
+      "age_refusal"
+    ],
+    "lead_opening_style": "greeting-only",
+    "plan_tier": "completo"
+  }
+}

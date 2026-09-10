@@ -1,0 +1,64 @@
+{
+  "conversation_id": "conv_00007",
+  "outcome": "em_negociacao",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "Boa tarde, quero uma cotacao"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Carla, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Tracker, ano 2018"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Cpf 394.956.032-77, cep 04533-846, tenho 24 anos"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "meu email é carla_costa79@gmail.com e o whats é esse mesmo +55 81 97764-9917"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "qualquer coisa me chama"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Premium por R$ 349,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "preciso pensar"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Posso ajustar a franquia pra baixar a parcela. Te mando uma opcao amanha?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "pode mandar sim"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "quote_presented",
+    "expected_key_data": {
+      "age": 24,
+      "veiculo_ano": 2018,
+      "cep": "04533-846",
+      "vehicle_model": "Chevrolet Tracker"
+    },
+    "objection_categories": [
+      "preciso_pensar"
+    ],
+    "lead_opening_style": "greeting-only",
+    "plan_tier": "premium"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "conversation_id": "conv_00018",
+  "outcome": "ganho",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "Oi, queria fazer um seguro pro meu carro"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Joao, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "e um Corolla 2016"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Tenho 77 anos, cep 30931-703, cpf 062.249.289-67"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "meu email é joaopereira@hotmail.com e o whats é esse mesmo +55 62 95496-2080"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[documento] CNH_frente.pdf"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "qualquer coisa me chama"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Essencial por R$ 159,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "vamos nessa, gostei"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Maravilha! Vou gerar o boleto e te mando a apolice. Bem-vindo!"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "quote_accepted",
+    "expected_key_data": {
+      "age": 77,
+      "veiculo_ano": 2016,
+      "cep": "30931-703",
+      "vehicle_model": "Toyota Corolla"
+    },
+    "objection_categories": [
+      "age_refusal"
+    ],
+    "lead_opening_style": "direct-quote",
+    "plan_tier": "essencial"
+  }
+}

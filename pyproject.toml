@@ -28,3 +28,6 @@ dev = [
     "ruff==0.16.5",
     "uvicorn==0.52.4",
 ]
+
+[tool.pytest.ini_options]
+markers = ["eval: slow tests that call a LLM"]

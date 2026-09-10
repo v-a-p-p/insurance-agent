@@ -1,0 +1,61 @@
+{
+  "conversation_id": "conv_00035",
+  "outcome": "sem_resposta",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "Boa tarde, quero uma cotacao"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Isabela, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Hyundai HB20 2004"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Cpf 723.862.551-23, cep 04664-897, tenho 55 anos"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "meu email é isabela.costa@bol.com.br e o whats é esse mesmo +55 62 98170-9826"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[documento] CNH_frente.pdf"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "qualquer coisa me chama"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Premium por R$ 159,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Oi, conseguiu ver minha proposta?"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "no_response",
+    "expected_key_data": {
+      "age": 55,
+      "veiculo_ano": 2004,
+      "cep": "04664-897",
+      "vehicle_model": "Hyundai HB20"
+    },
+    "objection_categories": [
+      "ghosting",
+      "vehicle_refusal"
+    ],
+    "lead_opening_style": "greeting-only",
+    "plan_tier": "premium"
+  }
+}

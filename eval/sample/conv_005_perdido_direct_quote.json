@@ -1,0 +1,73 @@
+{
+  "conversation_id": "conv_00002",
+  "outcome": "perdido",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "Oi, queria fazer um seguro pro meu carro"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Nicolas, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Pulse, ano 2008"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Tenho 55 anos, cpf 965.515.492-09, cep 04623-171"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[documento] CNH_frente.pdf"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[imagem] foto do veiculo na garagem"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[audio] mensagem de voz (18s)"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "a placa é GGE4X30 se precisar"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Premium por R$ 129,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "preciso pensar... a SulAmerica me ofereceu menos"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Entendo! Consigo rever, posso te ligar?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "nao precisa, obrigado"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "quote_refused",
+    "expected_key_data": {
+      "age": 55,
+      "veiculo_ano": 2008,
+      "cep": "04623-171",
+      "vehicle_model": "Fiat Pulse"
+    },
+    "objection_categories": [
+      "competitor_mention",
+      "preciso_pensar"
+    ],
+    "lead_opening_style": "direct-quote",
+    "plan_tier": "premium"
+  }
+}

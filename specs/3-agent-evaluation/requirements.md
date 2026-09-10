@@ -14,14 +14,9 @@ deterministic responses.
 | `eval/sample/` | ~30 hand-picked conversations as JSON files with annotations |
 | `eval/judge.py` | LLM-as-judge with structured 1–5 Likert output across 4 rubric dimensions |
 | `eval/runner.py` | Replays conversations through agent graph, turn by turn, scoring each reply |
-| `eval/conftest.py` | Fixtures: load samples, build agent, build judge, parametrized conversation runs |
-| `eval/report.py` | Aggregate stats, pass rate, JSON lines results file |
-| `eval/test_qualification.py` | Judge scores data extraction accuracy |
-| `eval/test_routing.py` | Verify graph node traversal for each intent type |
-| `eval/test_quote.py` | Judge scores quote presentation, refusal + auto-retry, no-invention rule |
-| `eval/test_objections.py` | Judge scores agent response to objections (price, competitor, hesitation, ghosting) |
-| `eval/test_pii.py` | Judge verifies agent does not echo CPF/email/phone in replies |
-| `eval/test_e2e.py` | Full multi-turn replays with judge evaluating the entire interaction |
+| `eval/conftest.py` | Fixtures: load samples, build agent, build judge |
+| `eval/report.py` | Aggregate stats, pass rate, JSON lines results file written to `eval/results/` |
+| `eval/test_eval.py` | Single `@pytest.mark.eval` test: replays all ~30 conversations, scores them, builds report, writes timestamped JSON lines to `eval/results/` |
 
 ### Out of scope
 
@@ -137,13 +132,6 @@ wire a `QuoteClient` mock that returns predictable responses based on lead data.
 This is NOT the same as mocking the LLM — the agent's LLM still makes real calls,
 but the tool it calls returns controlled data.
 
-### Decision 8: State-based extraction validation for qualification tests
-
-**Why**: The judge scores whether the agent _communicates_ the extracted data correctly
-(tone, relevance). But whether the data was actually _stored_ in agent state is a
-deterministic check — no LLM needed. `test_qualification.py` mixes: judge-scored
-communication quality AND direct `agent_state.lead` assertions for extraction accuracy.
-
 ---
 
 ## Sample Selection Criteria
@@ -197,6 +185,7 @@ eval/
 ├── judge.py
 ├── runner.py
 ├── report.py
+├── test_eval.py
 ├── sample/
 │   ├── README.md
 │   ├── conv_001_ganho_direct_quote.json
@@ -205,12 +194,6 @@ eval/
 │   └── .gitkeep
 ├── results/
 │   └── .gitkeep
-├── test_qualification.py
-├── test_routing.py
-├── test_quote.py
-├── test_objections.py
-├── test_pii.py
-└── test_e2e.py
 
 pyproject.toml  # MODIFIED: add [tool.pytest.ini_options] markers
 .gitignore      # MODIFIED: add eval/results/*.jsonl

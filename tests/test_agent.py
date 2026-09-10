@@ -6,6 +6,7 @@ from langchain_core.messages import AIMessage, HumanMessage
 from src.chat.agent import (
     AgentState,
     ClassificationResult,
+    LeadExtraction,
     build_agent,
 )
 from src.quote.schemas import QuoteError, QuoteResponse
@@ -33,13 +34,10 @@ class TestHappyPath:
         def classify_side_effect(*args, **kwargs):
             call_count["count"] += 1
             if call_count["count"] == 1:
-                return ClassificationResult(
-                    intent="respond", reply="Ola! Como posso ajudar?"
-                )
+                return ClassificationResult(intent="respond")
             return ClassificationResult(
                 intent="qualify",
-                reply="Perfeito! Vou fazer sua cotacao.",
-                lead_update={"age": 35, "veiculo_ano": 2020, "cep": "01310-100"},
+                lead_update=LeadExtraction(age=35, veiculo_ano=2020, cep="01310-100"),
             )
 
         structured = MagicMock()
@@ -47,9 +45,7 @@ class TestHappyPath:
 
         llm = MagicMock()
         llm.with_structured_output.return_value = structured
-        llm.invoke.return_value = AIMessage(
-            content="Gostaria de seguir com esse plano?"
-        )
+        llm.invoke.return_value = AIMessage(content="Ola! Como posso ajudar?")
 
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}
@@ -90,12 +86,10 @@ class TestRefusalPath:
         structured = MagicMock()
         structured.invoke.return_value = ClassificationResult(
             intent="qualify",
-            reply="Vou cotar!",
-            lead_update={"age": 35, "veiculo_ano": 2020, "cep": "01310-100"},
+            lead_update=LeadExtraction(age=35, veiculo_ano=2020, cep="01310-100"),
         )
         llm = MagicMock()
         llm.with_structured_output.return_value = structured
-        llm.invoke.return_value = AIMessage(content="Seu plano ficou assim...")
 
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}
@@ -132,12 +126,10 @@ class TestRefusalPath:
         structured = MagicMock()
         structured.invoke.return_value = ClassificationResult(
             intent="qualify",
-            reply="Vou cotar!",
-            lead_update={"age": 80, "veiculo_ano": 1980, "cep": "01310-100"},
+            lead_update=LeadExtraction(age=80, veiculo_ano=1980, cep="01310-100"),
         )
         llm = MagicMock()
         llm.with_structured_output.return_value = structured
-        llm.invoke.return_value = AIMessage(content="Ola!")
 
         mock_quote = AsyncMock()
         mock_quote.get_planos.return_value = {"planos": []}
@@ -163,7 +155,7 @@ class TestMissingData:
         llm = MagicMock()
         structured = MagicMock()
         structured.invoke.return_value = ClassificationResult(
-            intent="qualify", reply="Entendi!", lead_update={"age": 35}
+            intent="qualify", lead_update=LeadExtraction(age=35)
         )
         llm.with_structured_output.return_value = structured
         llm.invoke.return_value = AIMessage(content="Qual o ano do seu veiculo?")

@@ -1,0 +1,76 @@
+{
+  "conversation_id": "conv_00134",
+  "outcome": "em_negociacao",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "Oi, queria fazer um seguro pro meu carro"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Ana, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "e um Spin 2021"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Cep 88757-805, cpf 458.670.273-76, tenho 58 anos"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "meu email é ana_silva@outlook.com e o whats é esse mesmo +55 62 96222-7673"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[documento] CNH_frente.pdf"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[imagem] foto do veiculo na garagem"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[audio] mensagem de voz (18s)"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "to no aguardo"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Completo por R$ 189,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "vi mais barato na concorrente"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Posso ajustar a franquia pra baixar a parcela. Te mando uma opcao amanha?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "pode mandar sim"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "quote_presented",
+    "expected_key_data": {
+      "age": 58,
+      "veiculo_ano": 2021,
+      "cep": "88757-805",
+      "vehicle_model": "Chevrolet Spin"
+    },
+    "objection_categories": [
+      "competitor_mention"
+    ],
+    "lead_opening_style": "direct-quote",
+    "plan_tier": "completo"
+  }
+}

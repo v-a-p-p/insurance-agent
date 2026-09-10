@@ -1,0 +1,58 @@
+{
+  "conversation_id": "conv_00093",
+  "outcome": "ganho",
+  "messages": [
+    {
+      "sender_role": "lead",
+      "message_body": "Boa tarde, quero uma cotacao"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Ola Vinicius, tudo otimo! Claro, vou te ajudar. Qual o modelo e ano do veiculo?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "e um Sandero 2023"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Perfeito. Pra cotar certinho preciso de alguns dados. Pode me passar seu CPF, idade e o CEP de onde o carro dorme?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "Cpf 494.440.340-20, cep 13635-181, tenho 33 anos"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "[documento] CNH_frente.pdf"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "to no aguardo"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Show! Pelo perfil consigo o plano Premium por R$ 349,90/mes. Cobre colisao, roubo e furto. Te interessa?"
+    },
+    {
+      "sender_role": "lead",
+      "message_body": "fechado!"
+    },
+    {
+      "sender_role": "vendedor",
+      "message_body": "Maravilha! Vou gerar o boleto e te mando a apolice. Bem-vindo!"
+    }
+  ],
+  "annotations": {
+    "expected_outcome": "quote_accepted",
+    "expected_key_data": {
+      "age": 33,
+      "veiculo_ano": 2023,
+      "cep": "13635-181",
+      "vehicle_model": "Renault Sandero"
+    },
+    "objection_categories": [],
+    "lead_opening_style": "greeting-only",
+    "plan_tier": "premium"
+  }
+}

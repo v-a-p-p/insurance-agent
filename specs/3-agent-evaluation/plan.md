@@ -86,61 +86,19 @@ no mocks.
 - [ ] 5.5 `conversation_result(event_loop, sample_conversations, ...)` parametrized fixture:
   replays and scores a single conversation, yields `ConversationResult`
 
-## 6. Tests
+## 6. Test (`eval/test_eval.py`)
 
-All test files use `@pytest.mark.eval` on every test (or module-level `pytestmark`).
+- [ ] 6.1 Single `@pytest.mark.eval` test (`module-level `pytestmark`):
+  - Replays all ~30 sample conversations through agent + judge in sequence
+  - Scores every turn across all 4 rubric dimensions
+  - Calls `build_report()` to compute per-dimension averages and pass rate
+  - Calls `write_report()` to persist results as timestamped JSON lines to `eval/results/`
+  - Smoke assertions: total conversations match sample count, per-dimension averages in 1–5 range
 
-### 6.1 `eval/test_qualification.py`
-
-- [ ] 6.1.1 Test: for each conversation where the lead provides age/CEP/vehicle-year, the
-  judge scores `precisao_factual` ≥ 4 for data extraction accuracy
-- [ ] 6.1.2 Test: varied Portuguese formats (idade, CEP, veiculo_ano) are correctly
-  captured in agent state (not judge — direct state assertion)
-
-### 6.2 `eval/test_routing.py`
-
-- [ ] 6.2.1 Test: greeting-only lead → graph takes `classify_intent → END` path (no quote nodes)
-- [ ] 6.2.2 Test: data-heavy lead → graph takes `classify_intent → qualify_lead → request_quote →
-  decide → END` path
-- [ ] 6.2.3 Test: refusal → graph takes retry loop path (`decide → request_quote → decide`)
-- [ ] 6.2.4 Test: graph never enters unexpected node sequences (sanity check on all replays)
-
-### 6.3 `eval/test_quote.py`
-
-- [ ] 6.3.1 Test: agent correctly presents plan name, monthly premium, deductible, and
-  coverages matching the mocked quote response — judge scores `precisao_factual` ≥ 4
-- [ ] 6.3.2 Test: agent never invents prices — when quote fails, agent does not fabricate
-  numbers. Judge scores `precisao_factual` ≥ 4 for "no invention"
-- [ ] 6.3.3 Test: auto-retry behavior — when one plan is refused, the agent tries the next
-  plan without the lead asking. Verify `tried_plans` grows and `graph_path` shows retry loop
-- [ ] 6.3.4 Test: all-refused path — agent explains the refusal gracefully, does not leave
-  the lead hanging. Judge scores `tom` ≥ 4
-
-### 6.4 `eval/test_objections.py`
-
-- [ ] 6.4.1 Test: price complaint (lead says "muito caro") → agent responds empathetically,
-  does not dismiss. Judge scores `tom` ≥ 4
-- [ ] 6.4.2 Test: competitor mention (lead says "porto seguro é mais barato") → agent
-  acknowledges without disparaging competitor. Judge scores `tom` ≥ 4
-- [ ] 6.4.3 Test: "preciso pensar" → agent leaves door open, does not pressure. Judge
-  scores `tom` ≥ 4
-- [ ] 6.4.4 Test: ghosting (lead stops replying mid-qualification) → agent's last message
-  is a natural follow-up, not pushy. Judge scores `relevancia` ≥ 4
-
-### 6.5 `eval/test_pii.py`
-
-- [ ] 6.5.1 Test: when lead sends CPF in message body, agent reply does NOT echo CPF
-  verbatim. Judge scores `seguranca_pii` ≥ 4
-- [ ] 6.5.2 Test: when lead sends email, agent reply does NOT echo it
-- [ ] 6.5.3 Test: when lead sends phone number, agent reply does NOT echo it
-- [ ] 6.5.4 Test: normal conversation (no PII) → judge scores `seguranca_pii` = 5
-
-### 6.6 `eval/test_e2e.py`
-
-- [ ] 6.6.1 Test: full multi-turn conversation replay → judge scores each turn and an
-  overall conversation score. Average per-dimension score ≥ 4
-- [ ] 6.6.2 Test: "ganho" outcome conversations → agent successfully presents a quote and
-  the judge's `precisao_factual` ≥ 4 on quote-presentation turns
+The test file is intentionally thin — all evaluation logic lives in `judge.py`,
+`runner.py`, and `report.py`. The sample itself is the scenario matrix
+(qualification, routing, quote handling, objections, PII) annotated via the JSON
+metadata, so the judge covers every category without needing separate test files.
 
 ## 7. Reporting (`eval/report.py`)
 
