@@ -32,7 +32,47 @@ reviewable and testable.
 
 ---
 
-## Phase 3 — Resilience
+## Phase 3 — Agent Evaluation
+
+**Goal**: Validate the Phase 2 agent against a hand-picked diverse sample of real
+conversations from the dataset using **LLM-as-judge** — real OpenRouter calls,
+no mocks.
+
+**Dataset sample**: ~30 conversations hand-picked from the dataset
+(`/namastex-fde-challenge/dataset/conversations.parquet`) covering maximum outcome
+diversity — all 4 outcomes (`ganho`, `perdido`, `em_negociacao`, `sem_resposta`),
+all 4 lead opening styles, all 5 objection categories, all 3 plan tiers, and varied
+age/CEP/vehicle combinations. The selected conversations are copied into
+`eval/sample/` for reproducibility, with a note indicating their source.
+
+- `eval/` directory with a pytest-based evaluation framework.
+- `eval/sample/`: hand-picked conversation transcripts copied from the dataset,
+  annotated with expected outcomes and key data points.
+- `eval/judge.py`: LLM-as-judge module — calls the same OpenRouter model to score
+  the agent's replies on a rubric (relevance, tone, factual accuracy, PII safety)
+  using a 1–5 Likert scale, with 4+ threshold for pass. Returns structured scores
+  via Pydantic.
+- `eval/runner.py`: replays selected conversations through the agent graph, turn by
+  turn, capturing agent replies for judgment.
+- `eval/conftest.py`: fixtures to load the sample conversations and the judge model.
+- Qualification extraction tests: judge scores whether the agent correctly extracts
+  age, CEP, vehicle-year from varied Portuguese formats.
+- Graph routing tests: verify the graph follows the correct node path for each intent.
+- Quote handling tests: judge scores quote presentation accuracy, refusal + auto-retry
+  behavior, and whether prices are never invented.
+- Objection handling tests: judge scores agent responses to price complaints, competitor
+  mentions, "preciso pensar", and ghosting.
+- PII safety tests: judge verifies the agent does not echo CPF/email/phone in replies.
+- End-to-end conversation replays with judge evaluating the entire multi-turn interaction.
+- Evaluation report: per-category 1–5 scores + overall pass rate, printed at end of run.
+  Results persisted as JSON lines for diffing across runs.
+
+**Out of scope**: Mocked LLM — evaluation uses real OpenRouter calls to assess
+real agent quality.
+
+---
+
+## Phase 4 — Resilience
 
 **Goal**: The agent never breaks when `/quote` misbehaves.
 
@@ -45,7 +85,7 @@ reviewable and testable.
 
 ---
 
-## Phase 4 — Human Handoff
+## Phase 5 — Human Handoff
 
 **Goal**: Clear, defensible escalation to a human operator.
 
@@ -62,7 +102,7 @@ reviewable and testable.
 
 ---
 
-## Phase 5 — Observability
+## Phase 6 — Observability
 
 **Goal**: Full traceability — every action is logged and reconstructable.
 
@@ -75,7 +115,7 @@ reviewable and testable.
 
 ---
 
-## Phase 6 — Data Sensitivity
+## Phase 7 — Data Sensitivity
 
 **Goal**: PII is detected at the agent level and never leaked to logs or persisted.
 
@@ -89,7 +129,7 @@ reviewable and testable.
 
 ---
 
-## Phase 7 — Polish & Docs
+## Phase 8 — Polish & Docs
 
 **Goal**: Everything documented, tested end-to-end, ready for submission.
 
