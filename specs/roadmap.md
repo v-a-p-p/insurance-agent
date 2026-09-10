@@ -18,7 +18,7 @@ reviewable and testable.
 
 ---
 
-## Phase 2 — Agent Core
+## Phase 2 — Agent Core [DONE]
 
 **Goal**: Working conversational agent that qualifies the lead and produces a quote.
 
@@ -57,6 +57,7 @@ reviewable and testable.
   4. Insufficient data after 3 qualification rounds.
 - Structured handoff summary for the human agent (lead info, what was tried, why escalated).
 - Graph `interrupt()` at handoff node for human-in-the-loop approval.
+- Specify the handoff prompt behavior precisely (what to persist to state, exact wording) — resolving the TODO left in `src/chat/prompt.py` from Phase 2.
 - Tests: each trigger path, handoff summary format.
 
 ---

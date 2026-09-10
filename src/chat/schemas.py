@@ -13,6 +13,7 @@ class Lead(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     lead: Lead | None = None
+    conversation_id: str | None = None
 
 
 class ChatResponse(BaseModel):
