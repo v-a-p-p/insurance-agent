@@ -141,9 +141,4 @@ real agent quality.
 - End-to-end tests in `tests/e2e/`, running on top of the whole real system (Docker
   containers + live OpenRouter): full conversation flow, asserts on final state. Marked
   `pytest.mark.e2e` and documented in the README.
-- Execution log ("log de uma execução completa"): the eval suite (`pytest -m eval`)
-  writes complete conversation traces to `eval/results/<timestamp>.jsonl` — lead
-  messages, agent replies, graph paths, and judge scores, including the quote. The README
-  points readers to that folder as the full start-to-finish execution log.
-- `ai-logs/` directory populated with exported AI conversations.
-- Code cleanup pass: consistent naming, no dead code, `ruff check --fix && ruff format`.
+- Add execution log ("log de uma execução completa").
